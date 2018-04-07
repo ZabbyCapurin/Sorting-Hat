@@ -1,0 +1,44 @@
+{
+    "env": {
+        "browser": true,
+        "es6": true,
+        "node": true,
+        "commonjs": true
+    },
+    "extends": [
+        "airbnb",
+        "eslint:recommended",
+        "plugin:fetch/recommended",
+        "plugin:react/recommended"
+    ],
+    "parserOptions": {
+        "ecmaVersion": 6,
+        "sourceType": "module",
+        "ecmaFeatures": {
+            "jsx": true
+        }
+    },
+    "plugins": [
+        "react",
+        "fetch"
+    ],
+    "rules": {
+        "class-methods-use-this": 1,
+        "max-len": 0,
+        "jsx-a11y/alt-text": 1,
+        "jsx-a11y/anchor-is-valid": [ 2, {
+            "components": [ "Link" ],
+            "specialLink": [ "to", "hrefLeft", "hrefRight" ],
+            "aspects": [ "noHref", "invalidHref", "preferButton" ]
+        }],
+        "no-mixed-operators": 0,
+        "no-underscore-dangle": 0,
+        "react/forbid-prop-types": 1,
+        "react/jsx-filename-extension": 0,
+        "react/prefer-stateless-function": 1,
+        "react/prop-types": [2, { "ignore": ["children", "className", "style"] }],
+        "react/no-danger": 0,
+        "react/require-default-props": 1,
+        "linebreak-style": "off"
+    }
+}

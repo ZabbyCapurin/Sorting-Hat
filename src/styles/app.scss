@@ -1,0 +1,11 @@
+// app.scss
+$font-stack: 'Segoe UI', sans-serif;
+$mainColor: rgb(16, 16, 16);
+
+
+body {
+  color: $mainColor;
+  background: white;
+  font-family: $font-stack;
+  
+}

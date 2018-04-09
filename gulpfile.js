@@ -1,20 +1,16 @@
-var gulp = require('gulp');
-var sass = require('gulp-sass');
-var useref = require('gulp-useref');
-var uglify = require('gulp-uglify');
-var gulpIf = require('gulp-if');
-var cssnano = require('gulp-cssnano');
-var browserSync = require('browser-sync').create();
-var del = require('del');
-var runSequence = require('run-sequence');
-var webpackStream = require('webpack-stream');
-var webpack = require('webpack');
-var react = require('gulp-react');
-var webpackConfig = require('./webpack.config');
-
+let gulp = require('gulp');
+let sass = require('gulp-sass');
+let cssnano = require('gulp-cssnano');
+let browserSync = require('browser-sync').create();
+let del = require('del');
+let runSequence = require('run-sequence');
+let webpackStream = require('webpack-stream');
+let react = require('gulp-react');
+let webpackConfig = require('./webpack.config');
 
 gulp.task('browserSync', function() {
     browserSync.init({
+        injectChanges: true,
         server: {
             baseDir: 'dist'
         }
@@ -24,12 +20,9 @@ gulp.task('browserSync', function() {
 gulp.task('sass', function(){
     return gulp.src('src/styles/*.scss')
         .pipe(sass()) // Using gulp-sass
-        // .pipe(gulp.dest('src/styles/output'))
         .pipe(cssnano())
         .pipe(gulp.dest('dist/styles'))
-        .pipe(browserSync.reload({
-            stream: true
-        }))
+        .pipe(browserSync.stream({match: '**/*.css'}));
 });
 
 gulp.task('webpackStream', function() {
@@ -38,7 +31,7 @@ gulp.task('webpackStream', function() {
         .pipe(gulp.dest('dist/scripts'))
         .pipe(browserSync.reload({
             stream: true
-        }))
+        }));
 });
 
 gulp.task('react', function() {
@@ -47,26 +40,21 @@ gulp.task('react', function() {
         .pipe(gulp.dest('dist/templates'))
         .pipe(browserSync.reload({
             stream: true
-        }))
+        }));
 });
-
-// gulp.task('useref', function() {
-//     return gulp.src('src/*.html')
-//         .pipe(useref())
-//         .pipe(gulpIf('*.css', cssnano()))
-//         .pipe(gulp.dest('dist'))
-// });
 gulp.task('copy', function() {
     return gulp.src('src/*.html')
         .pipe(gulp.dest('dist'))
+        .pipe(browserSync.reload({
+            stream: true
+        }));
 });
 
 gulp.task('watch', function() {
     gulp.watch('src/styles/*.scss', ['sass']);
-    // gulp.watch('src/styles/output/*.css', ['useref']);
     gulp.watch('src/scripts/**/*.js', ['webpackStream']);
-    gulp.watch('src/*.html', browserSync.reload);
-    gulp.watch('src/templates/*.jsx', browserSync.reload);
+    gulp.watch('src/templates/*.jsx', ['react']);
+    gulp.watch('src/*.html', ['copy']);
 });
 
 gulp.task('clean:dist', function() {

@@ -8,7 +8,6 @@ import SortingHat from '../lib/sortingHat';
 
 const app = (a, b) => a + b;
 
-alert(app(4, 5));
 render(
   <SortingHat />,
   document.getElementById('root'),

@@ -78,10 +78,10 @@ const config = {
       },
     ],
   },
-  externals: {
-    react: 'React',
-    'react-dom': 'ReactDOM',
-  },
+  // externals: {
+  //   'react': 'React', //eslint-disable-line
+  //   'react-dom': 'ReactDOM',
+  // },
   plugins: [
     // new webpack.HotModuleReplacementPlugin(),
     // new MiniCssExtractPlugin({

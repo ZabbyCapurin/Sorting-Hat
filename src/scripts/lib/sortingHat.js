@@ -55,29 +55,12 @@ export default class SortingHat extends React.Component {
     const arrayCopy = JSON.parse(JSON.stringify(array));
     for (let i = array.length - 1; i > 0; i -= 1) {
       const j = Math.floor(Math.random() * (i + 1));
-      [arrayCopy[i], arrayCopy[j]] = [array[j], array[i]];
+      [arrayCopy[i], arrayCopy[j]] = [arrayCopy[j], arrayCopy[i]];
     }
     return arrayCopy;
   }
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      // error: false
-      fullStudentInfoRaw: '',
-      fullStudentInfo: [],
-      groups: 1,
-    };
-    this.handleCommaDelimitedListOnChange = this.handleCommaDelimitedListOnChange.bind(this);
-    this.handleNumGroupsOnChange = this.handleNumGroupsOnChange.bind(this);
-  }
-  componentDidMount() {
-    // if (!this.state.error)
-    // this.setup();
-  }
-  createGroups() {
-    const { fullStudentInfo, groups } = this.state;
-
+  static createGroups(fullStudentInfo, groups) {
     const membersHolder = [];
     const groupNum = 1;
     const totalStudents = fullStudentInfo.length;
@@ -85,13 +68,14 @@ export default class SortingHat extends React.Component {
 
     const grouped = SortingHat.groupBy(fullStudentInfo, i => [i.Organization]);
 
-    const allGroups = new Array(groups).fill([]);
+    const allGroups = [...Array(parseInt(groups, 10))].map(e => []); // new Array(parseInt(groups, 10)).fill([]);
     let currGroup = 0;
     for (let orgIndex = 0, orgCount = grouped.length; orgIndex < orgCount; orgIndex += 1) {
       const org = grouped[orgIndex];
-      // const shuffledOrg = SortingHat.shuffleArray(org);
-      for (let memberIndex = 0, memberCount = org.length; memberIndex < memberCount; memberIndex += 1) {
-        const member = org[memberIndex];
+      const shuffledOrg = SortingHat.shuffleArray(org);
+      for (let memberIndex = 0, memberCount = shuffledOrg.length; memberIndex < memberCount; memberIndex += 1) {
+        const member = shuffledOrg[memberIndex];
+        const rowColCount = allGroups[currGroup].length;
         allGroups[currGroup].push(member);
         if (currGroup < groups - 1) {
           currGroup += 1;
@@ -105,6 +89,24 @@ export default class SortingHat extends React.Component {
       reactGroups.push(<Group key={x} id={x} members={allGroups[x]} />);
     }
     return reactGroups;
+  }
+
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      // error: false
+      fullStudentInfoRaw: '',
+      fullStudentInfo: [],
+      groups: 1,
+      sortedGroups: [],
+    };
+    this.handleCommaDelimitedListOnChange = this.handleCommaDelimitedListOnChange.bind(this);
+    this.handleNumGroupsOnChange = this.handleNumGroupsOnChange.bind(this);
+  }
+  componentDidMount() {
+    // if (!this.state.error)
+    // this.setup();
   }
 
   handleCommaDelimitedListOnChange(e) {
@@ -124,14 +126,19 @@ export default class SortingHat extends React.Component {
       csvArrayObj.push(obj);
     }
     this.setState({ fullStudentInfoRaw: data, fullStudentInfo: csvArrayObj });
+    const sortedGroups = SortingHat.createGroups(csvArrayObj, this.state.groups);
+    this.setState({ sortedGroups });
   }
   handleNumGroupsOnChange(e) {
     const groups = e.target.value;
     this.setState({ groups });
+    const sortedGroups = SortingHat.createGroups(this.state.fullStudentInfo, groups);
+    this.setState({ sortedGroups });
   }
   render() {
-    const { fullStudentInfoRaw, fullStudentInfo, groups } = this.state;
-    const sortedGroups = this.createGroups();
+    const {
+      fullStudentInfoRaw, fullStudentInfo, groups, sortedGroups,
+    } = this.state;
     return (
       <div id="infoHolder">
         <textarea

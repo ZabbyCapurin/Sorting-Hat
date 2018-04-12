@@ -7,7 +7,7 @@ export default class OrgGroup extends React.PureComponent {
 
     return (
       <div key={this.props.id}>
-        <h1>Group #{this.props.id}</h1>
+        <h1>Group #{this.props.id + 1}</h1>
         <ul>
           {displayMembers}
         </ul>

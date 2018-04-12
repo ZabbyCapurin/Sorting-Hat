@@ -143,7 +143,7 @@ export default class SortingHat extends React.Component {
     return (
       <div id="infoHolder">
         <form id="inputHolder">
-          <h2>Students<span className="num">{fullStudentInfo.length}</span></h2>
+          <h2>Members<span className="num">{fullStudentInfo.length}</span></h2>
           <label htmlFor="numGroups"># of Groups</label>
           <input id="numGroups" onChange={this.handleNumGroupsOnChange} type="number" step="1" min="1" max={fullStudentInfo.length} value={groups} />
           <textarea

@@ -67,14 +67,15 @@ export default class SortingHat extends React.Component {
     const studentsPerGroup = Math.ceil(totalStudents / groups);
 
     const grouped = SortingHat.groupBy(fullStudentInfo, i => [i.Organization]);
+    const shuffledGroup = SortingHat.shuffleArray(grouped);
 
     const allGroups = [...Array(parseInt(groups, 10))].map(e => []); // new Array(parseInt(groups, 10)).fill([]);
     let currGroup = 0;
-    for (let orgIndex = 0, orgCount = grouped.length; orgIndex < orgCount; orgIndex += 1) {
-      const org = grouped[orgIndex];
-      const shuffledOrg = SortingHat.shuffleArray(org);
-      for (let memberIndex = 0, memberCount = shuffledOrg.length; memberIndex < memberCount; memberIndex += 1) {
-        const member = shuffledOrg[memberIndex];
+    for (let orgIndex = 0, orgCount = shuffledGroup.length; orgIndex < orgCount; orgIndex += 1) {
+      const org = shuffledGroup[orgIndex];
+      const shuffledMembers = SortingHat.shuffleArray(org);
+      for (let memberIndex = 0, memberCount = shuffledMembers.length; memberIndex < memberCount; memberIndex += 1) {
+        const member = shuffledMembers[memberIndex];
         const rowColCount = allGroups[currGroup].length;
         allGroups[currGroup].push(member);
         if (currGroup < groups - 1) {
@@ -90,7 +91,6 @@ export default class SortingHat extends React.Component {
     }
     return reactGroups;
   }
-
 
   constructor(props) {
     super(props);
@@ -139,19 +139,23 @@ export default class SortingHat extends React.Component {
     const {
       fullStudentInfoRaw, fullStudentInfo, groups, sortedGroups,
     } = this.state;
+    const x = '';
     return (
       <div id="infoHolder">
-        <textarea
-          id="commaDelimitedList"
-          onChange={this.handleCommaDelimitedListOnChange}
-          value={fullStudentInfoRaw}
-        />
-        <br />
-        <input id="numGroups" onChange={this.handleNumGroupsOnChange} type="number" step="1" min="1" max="100" value={groups} />
-        <br />
-        Total Students: {fullStudentInfo.length}
-        <br />
-        {sortedGroups}
+        <form id="inputHolder">
+          <h2>Students<span className="num">{fullStudentInfo.length}</span></h2>
+          <label htmlFor="numGroups"># of Groups</label>
+          <input id="numGroups" onChange={this.handleNumGroupsOnChange} type="number" step="1" min="1" max={fullStudentInfo.length} value={groups} />
+          <textarea
+            id="commaDelimitedList"
+            placeholder="CSV (firstName, lastName, org)"
+            onChange={this.handleCommaDelimitedListOnChange}
+            value={fullStudentInfoRaw}
+          />
+        </form>
+        <div id="groupsHolder">
+          {sortedGroups}
+        </div>
       </div>
     );
   }

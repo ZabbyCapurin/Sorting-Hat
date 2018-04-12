@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 
 export default class OrgGroup extends React.PureComponent {
   render() {
-    const displayMembers = this.props.members.map(member => <li key={member.id}>{member.FirstName} {member.LastName} ({member.Organization})</li>);
+    const displayMembers = this.props.members.map(member => <li key={member.id}>{member.FirstName} {member.LastName}<span>{member.Organization}</span></li>);
 
     return (
-      <div key={this.props.id}>
-        <h1>Group #{this.props.id + 1}</h1>
+      <div className="group" key={this.props.id}>
+        <strong>Group #{this.props.id + 1}</strong>
         <ul>
           {displayMembers}
         </ul>

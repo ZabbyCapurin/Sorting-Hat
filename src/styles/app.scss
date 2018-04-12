@@ -1,10 +1,96 @@
 // app.scss
 $font-stack: 'Segoe UI', sans-serif;
 $mainColor: rgb(16, 16, 16);
-
+$secondaryColor: skyblue;
+$dottedLine: rgba(255, 255, 255, 0.40);
 
 body {
+  margin: 0 16px;
   color: $mainColor;
   background: white;
-  font-family: $font-stack; 
+  font-family: $font-stack;
+  
+  #infoHolder {
+    width: 100vw;
+    > * {
+      float: left;
+    }
+    #inputHolder {
+      width: 30%;
+      max-width: 300px;
+      #commaDelimitedList {
+        margin-top: 16px;
+        height: 50vh;
+        position: relative;
+        width: 100%;
+        min-height: 200px;
+        resize: vertical;
+      }
+    }
+    #groupsHolder {
+      width: 67%;
+      padding-left: 1%;
+      display: flex;
+      flex-wrap: wrap;
+      .group {
+        padding: 8px 16px;
+        margin: 1%;
+        background: $secondaryColor;
+        color: white;
+        border-radius: 8px;
+        flex: 0 1 auto;
+        flex-basis: auto;
+        strong {
+          font-weight: bolder;
+          text-align: center;
+          display: block;
+          font-size: larger;
+        }
+        ul {
+          list-style-type: none;
+          padding: 0;
+          li {
+            border-top: 1px dotted $dottedLine;
+            > span {
+              font-style: oblique;
+              padding-left: 4px;
+              &:before {
+                content: '(';
+              }
+              &:after {
+                content: ')';
+              }
+            }
+            &:last-child {
+              border-bottom: 1px dotted $dottedLine;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+input[type="number"] {
+  width: 40px;
+}
+label {
+  font-weight: bold;
+  margin-right: 8px;
+  &:after {
+    content: ":";
+  }
+}
+.num {
+  font-weight: normal;
+  font-size: small;
+  background-color: $secondaryColor;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin: 0px 8px;
+  vertical-align: middle;
+  text-align: center;
+  top: 50%;
+  margin-top: -8px;
+  display: inline-block;
+  color: white;
 }

@@ -3,7 +3,7 @@
   "title": "Sorting Hat",
   "version": "0.0.0",
   "description": "Computer program to distribute people, we are able to effectively eliminate the time costs as a computer program can distribute people at a significantly faster rate than human could.",
-  "main": "index.js",
+  "main": "index.html",
   "scripts": {
     "test": "echo \\\"Error: no test specified\\\" && exit 1",
     "lint": "eslint ."

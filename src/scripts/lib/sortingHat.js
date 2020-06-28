@@ -62,8 +62,6 @@ export default class SortingHat extends React.Component {
   }
 
   static createGroups(fullStudentInfo, groups) {
-    const totalStudents = fullStudentInfo.length;
-
     const grouped = SortingHat.groupBy(fullStudentInfo, (i) => [i.Organization]);
     const shuffledGroup = SortingHat.shuffleArray(grouped);
 
@@ -83,11 +81,8 @@ export default class SortingHat extends React.Component {
         }
       }
     }
-    const reactGroups = [];
-    for (let x = 0, allGroupsCount = allGroups.length; x < allGroupsCount; x += 1) {
-      reactGroups.push(<Group key={x} id={x} members={allGroups[x]} />);
-    }
-    // const reactGroups = allGroups.map((x) => <Group key={x.id} id={x.id} members={x} />);
+
+    const reactGroups = allGroups.map((value, index) => <Group key={index.toString()} id={index} members={value} />);
     return reactGroups;
   }
 
@@ -124,7 +119,7 @@ export default class SortingHat extends React.Component {
         id: i,
         FirstName: firstName,
         LastName: lastName,
-        Organization: org,
+        Organization: org === undefined || org === 'undefined' ? null : org,
       };
       csvArrayObj.push(obj);
     }
@@ -180,7 +175,7 @@ export default class SortingHat extends React.Component {
 
           <textarea
             id="commaDelimitedList"
-            placeholder="CSV (firstName, lastName, org)"
+            placeholder="CSV (firstName[, lastName, org])"
             onChange={this.handleCommaDelimitedListOnChange}
             value={fullStudentInfoRaw}
           />

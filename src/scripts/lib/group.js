@@ -6,9 +6,12 @@ const OrgGroup = (props) => {
   const displayMembers = members.map((member) => (
     <li key={member.id}>
       {member.FirstName}
-      {' '}
-      {member.LastName}
-      <span>{member.Organization}</span>
+      {!!member.LastName && member.LastName !== '' ? ` ${member.LastName}` : null}
+      {
+        !!member.Organization && member.Organization !== ''
+          ? <span>{member.Organization}</span>
+          : null
+      }
     </li>
   ));
 

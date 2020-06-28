@@ -70,6 +70,18 @@ body {
     }
   }
 }
+button {
+  background-color: $secondaryColor;
+  color: white;
+  padding: 4px 8px;
+  margin: 20px auto 0px;
+  border: darken($color: $secondaryColor, $amount: 30) 2px solid;
+  width: 100%;
+  &:hover {
+    background-color: darken($color: $secondaryColor, $amount: 30);
+    cursor: pointer;
+  }
+}
 input[type="number"] {
   width: 40px;
 }

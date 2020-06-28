@@ -25,7 +25,7 @@ const config = {
     extensions: ['.js', '.jsx'],
   },
   module: {
-    loaders: [
+    rules: [
       {
         enforce: 'pre',
         test: /\.(js|jsx)$/,

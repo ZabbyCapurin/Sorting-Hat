@@ -75,9 +75,17 @@ gulp.task('build',
       'sass',
       'react',
       'webpackStream',
-      // 'browserSync',
+      'browserSync',
     ),
-    // 'copy',
+    'copy',
   ));
 
-gulp.task('default', gulp.series('build'));
+gulp.task('default',
+  gulp.series(
+    'clean:dist',
+    'sass',
+    'react',
+    'webpackStream',
+    'copy',
+  )
+);

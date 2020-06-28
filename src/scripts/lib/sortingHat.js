@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import React from 'react';
 import CSV from 'comma-separated-values';
 
@@ -39,7 +40,7 @@ export default class SortingHat extends React.Component {
       groups[group] = groups[group] || [];
       groups[group].push(o);
     });
-    return Object.keys(groups).map(group => groups[group]);
+    return Object.keys(groups).map((group) => groups[group]);
   }
 
   static isEmptyObject(obj) {
@@ -61,22 +62,19 @@ export default class SortingHat extends React.Component {
   }
 
   static createGroups(fullStudentInfo, groups) {
-    const membersHolder = [];
-    const groupNum = 1;
     const totalStudents = fullStudentInfo.length;
-    const studentsPerGroup = Math.ceil(totalStudents / groups);
 
-    const grouped = SortingHat.groupBy(fullStudentInfo, i => [i.Organization]);
+    const grouped = SortingHat.groupBy(fullStudentInfo, (i) => [i.Organization]);
     const shuffledGroup = SortingHat.shuffleArray(grouped);
 
-    const allGroups = [...Array(parseInt(groups, 10))].map(e => []); // new Array(parseInt(groups, 10)).fill([]);
+    const allGroups = [...Array(parseInt(groups, 10))].map((e) => []); // new Array(parseInt(groups, 10)).fill([]);
     let currGroup = 0;
     for (let orgIndex = 0, orgCount = shuffledGroup.length; orgIndex < orgCount; orgIndex += 1) {
       const org = shuffledGroup[orgIndex];
       const shuffledMembers = SortingHat.shuffleArray(org);
       for (let memberIndex = 0, memberCount = shuffledMembers.length; memberIndex < memberCount; memberIndex += 1) {
         const member = shuffledMembers[memberIndex];
-        const rowColCount = allGroups[currGroup].length;
+
         allGroups[currGroup].push(member);
         if (currGroup < groups - 1) {
           currGroup += 1;
@@ -85,10 +83,11 @@ export default class SortingHat extends React.Component {
         }
       }
     }
-    const reactGroups = [];
-    for (let x = 0, allGroupsCount = allGroups.length; x < allGroupsCount; x += 1) {
-      reactGroups.push(<Group key={x} id={x} members={allGroups[x]} />);
-    }
+    // const reactGroups = [];
+    // for (let x = 0, allGroupsCount = allGroups.length; x < allGroupsCount; x += 1) {
+    //   reactGroups.push(<Group key={x} id={x} members={allGroups[x]} />);
+    // }
+    const reactGroups = allGroups.map((x) => <Group key={x.id} id={x.id} members={x} />);
     return reactGroups;
   }
 
@@ -104,12 +103,14 @@ export default class SortingHat extends React.Component {
     this.handleCommaDelimitedListOnChange = this.handleCommaDelimitedListOnChange.bind(this);
     this.handleNumGroupsOnChange = this.handleNumGroupsOnChange.bind(this);
   }
+
   componentDidMount() {
     // if (!this.state.error)
     // this.setup();
   }
 
   handleCommaDelimitedListOnChange(e) {
+    const { groups } = this.state;
     const data = e.target.value;
 
     const csv = CSV.parse(data);
@@ -118,23 +119,30 @@ export default class SortingHat extends React.Component {
       const curr = csv[i];
       const [firstName, lastName, org] = curr;
 
-      const obj = {};
-      obj.id = i;
-      obj.FirstName = firstName;
-      obj.LastName = lastName;
-      obj.Organization = org;
+      const obj = {
+        id: i,
+        FirstName: firstName,
+        LastName: lastName,
+        Organization: org,
+      };
       csvArrayObj.push(obj);
     }
-    this.setState({ fullStudentInfoRaw: data, fullStudentInfo: csvArrayObj });
-    const sortedGroups = SortingHat.createGroups(csvArrayObj, this.state.groups);
-    this.setState({ sortedGroups });
+
+    const sortedGroups = SortingHat.createGroups(csvArrayObj, groups);
+    this.setState({
+      fullStudentInfoRaw: data,
+      fullStudentInfo: csvArrayObj,
+      sortedGroups,
+    });
   }
+
   handleNumGroupsOnChange(e) {
+    const { fullStudentInfo } = this.state;
     const groups = e.target.value;
-    this.setState({ groups });
-    const sortedGroups = SortingHat.createGroups(this.state.fullStudentInfo, groups);
-    this.setState({ sortedGroups });
+    const sortedGroups = SortingHat.createGroups(fullStudentInfo, groups);
+    this.setState({ groups, sortedGroups });
   }
+
   render() {
     const {
       fullStudentInfoRaw, fullStudentInfo, groups, sortedGroups,
@@ -143,7 +151,10 @@ export default class SortingHat extends React.Component {
     return (
       <div id="infoHolder">
         <form id="inputHolder">
-          <h2>Members<span className="num">{fullStudentInfo.length}</span></h2>
+          <h2>
+            Members
+            <span className="num">{fullStudentInfo.length}</span>
+          </h2>
           <label htmlFor="numGroups"># of Groups</label>
           <input id="numGroups" onChange={this.handleNumGroupsOnChange} type="number" step="1" min="1" max={fullStudentInfo.length} value={groups} />
           <textarea

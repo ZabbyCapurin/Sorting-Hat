@@ -37,7 +37,6 @@
             "specialLink": [ "to", "hrefLeft", "hrefRight" ],
             "aspects": [ "noHref", "invalidHref", "preferButton" ]
         }],
-        "jsx-a11y/label-has-for": 1,
         "no-mixed-operators": 0,
         "no-underscore-dangle": 0,
         "no-var": 2,

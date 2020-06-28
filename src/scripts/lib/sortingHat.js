@@ -83,11 +83,11 @@ export default class SortingHat extends React.Component {
         }
       }
     }
-    // const reactGroups = [];
-    // for (let x = 0, allGroupsCount = allGroups.length; x < allGroupsCount; x += 1) {
-    //   reactGroups.push(<Group key={x} id={x} members={allGroups[x]} />);
-    // }
-    const reactGroups = allGroups.map((x) => <Group key={x.id} id={x.id} members={x} />);
+    const reactGroups = [];
+    for (let x = 0, allGroupsCount = allGroups.length; x < allGroupsCount; x += 1) {
+      reactGroups.push(<Group key={x} id={x} members={allGroups[x]} />);
+    }
+    // const reactGroups = allGroups.map((x) => <Group key={x.id} id={x.id} members={x} />);
     return reactGroups;
   }
 
@@ -102,6 +102,7 @@ export default class SortingHat extends React.Component {
     };
     this.handleCommaDelimitedListOnChange = this.handleCommaDelimitedListOnChange.bind(this);
     this.handleNumGroupsOnChange = this.handleNumGroupsOnChange.bind(this);
+    this.handleRefreshOnClick = this.handleRefreshOnClick.bind(this);
   }
 
   componentDidMount() {
@@ -143,6 +144,12 @@ export default class SortingHat extends React.Component {
     this.setState({ groups, sortedGroups });
   }
 
+  handleRefreshOnClick() {
+    const { groups, fullStudentInfo } = this.state;
+    const sortedGroups = SortingHat.createGroups(fullStudentInfo, groups);
+    this.setState({ sortedGroups });
+  }
+
   render() {
     const {
       fullStudentInfoRaw, fullStudentInfo, groups, sortedGroups,
@@ -155,8 +162,22 @@ export default class SortingHat extends React.Component {
             Members
             <span className="num">{fullStudentInfo.length}</span>
           </h2>
-          <label htmlFor="numGroups"># of Groups</label>
-          <input id="numGroups" onChange={this.handleNumGroupsOnChange} type="number" step="1" min="1" max={fullStudentInfo.length} value={groups} />
+
+          <div>
+            <label># of Groups</label>
+            <input
+              id="numGroups"
+              onChange={this.handleNumGroupsOnChange}
+              type="number"
+              step="1"
+              min="1"
+              max={fullStudentInfo.length}
+              value={groups}
+            />
+          </div>
+
+          <button type="button" onClick={this.handleRefreshOnClick}>Refresh</button>
+
           <textarea
             id="commaDelimitedList"
             placeholder="CSV (firstName, lastName, org)"

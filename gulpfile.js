@@ -13,10 +13,8 @@ ghpages.publish('dist', (err) => { });
 
 gulp.task('browserSync', () => {
   browserSync.init({
-    injectChanges: true,
-    server: {
-      baseDir: 'dist',
-    },
+    watch: true,
+    server: 'dist',
   });
 });
 
@@ -29,16 +27,12 @@ gulp.task('sass', () => gulp.src('src/styles/*.scss')
 gulp.task('webpackStream', () => gulp.src('src/scripts/output/*.js')
   .pipe(webpackStream(webpackConfig))
   .pipe(gulp.dest('dist/scripts'))
-  .pipe(browserSync.reload({
-    stream: true,
-  })));
+  .pipe(browserSync.stream()));
 
 gulp.task('react', () => gulp.src('src/templates/*.jsx')
   .pipe(react())
   .pipe(gulp.dest('dist/templates'))
-  .pipe(browserSync.reload({
-    stream: true,
-  })));
+  .pipe(browserSync.stream()));
 
 gulp.task('copy', () => gulp.src('src/*.html')
   .pipe(gulp.dest('dist'))
@@ -47,6 +41,13 @@ gulp.task('copy', () => gulp.src('src/*.html')
   })));
 
 gulp.task('clean:dist', (done) => del(['dist/**/*', '!dist/images', '!dist/images/**/*'], done()));
+
+gulp.task('build',
+  gulp.parallel(
+    'sass',
+    'react',
+    'webpackStream',
+  ));
 
 gulp.task('watch', () => {
   gulp.watch('src/styles/*.scss', gulp.series('sass'));
@@ -58,21 +59,17 @@ gulp.task('watch', () => {
 gulp.task('serve',
   gulp.series(
     'clean:dist',
-    gulp.parallel(
-      'sass',
-      'react',
-      'webpackStream',
-      'browserSync',
-    ),
+    'build',
     'copy',
-    'watch',
+    gulp.parallel(
+      'browserSync',
+      'watch',
+    ),
   ));
 
 gulp.task('default',
   gulp.series(
     'clean:dist',
-    'sass',
-    'react',
-    'webpackStream',
+    'build',
     'copy',
   ));

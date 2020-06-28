@@ -55,20 +55,7 @@ gulp.task('watch', () => {
   gulp.watch('src/*.html', gulp.series('copy'));
 });
 
-// gulp.task('default', (done) => {
-//   gulp.series(
-//     gulp.parallel(
-//       'sass',
-//       'react',
-//       'webpackStream',
-//     ),
-//     'copy',
-//     'watch',
-//     done,
-//   );
-// });
-
-gulp.task('build',
+gulp.task('serve',
   gulp.series(
     'clean:dist',
     gulp.parallel(
@@ -78,6 +65,7 @@ gulp.task('build',
       'browserSync',
     ),
     'copy',
+    'watch',
   ));
 
 gulp.task('default',
@@ -87,5 +75,4 @@ gulp.task('default',
     'react',
     'webpackStream',
     'copy',
-  )
-);
+  ));

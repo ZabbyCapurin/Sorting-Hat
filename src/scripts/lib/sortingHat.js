@@ -149,7 +149,7 @@ export default class SortingHat extends React.Component {
     const {
       fullStudentInfoRaw, fullStudentInfo, groups, sortedGroups,
     } = this.state;
-    const x = '';
+
     return (
       <div id="infoHolder">
         <form id="inputHolder">
@@ -158,7 +158,7 @@ export default class SortingHat extends React.Component {
             <span className="num">{fullStudentInfo.length}</span>
           </h2>
 
-          <div>
+          <div id="numGroupsHolder">
             <label># of Groups</label>
             <input
               id="numGroups"

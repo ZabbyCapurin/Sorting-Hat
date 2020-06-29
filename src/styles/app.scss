@@ -1,5 +1,5 @@
 // app.scss
-$font-stack: 'Segoe UI', sans-serif;
+$font-stack: 'Segoe UI', sans-serif !important;
 $mainColor: rgb(16, 16, 16);
 $secondaryColor: skyblue;
 $dottedLine: rgba(255, 255, 255, 0.40);
@@ -25,6 +25,16 @@ body {
         width: 100%;
         min-height: 200px;
         resize: vertical;
+        padding: 4px 8px;
+      }
+      #numGroupsHolder {
+        display: flex;
+        justify-content: space-between;
+        > #numGroups {
+          flex-grow: 2;
+          padding: 4px 8px;
+          text-align: right;
+        }
       }
     }
     #groupsHolder {
@@ -84,7 +94,7 @@ button {
   }
 }
 input[type="number"] {
-  width: 40px;
+  min-width: 40px;
 }
 label {
   font-weight: bold;

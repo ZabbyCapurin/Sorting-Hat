@@ -158,7 +158,7 @@ export default class SortingHat extends React.Component {
             <span className="num">{fullStudentInfo.length}</span>
           </h2>
 
-          <div>
+          <div id="numGroupsHolder">
             <label># of Groups</label>
             <input
               id="numGroups"
